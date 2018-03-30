@@ -6,7 +6,7 @@ import pandas as pd
 
 app = dash.Dash()
 
-df = pd.read_parquet('reports_1.parquet')
+df = pd.read_parquet('service_reports.parquet')
 columns_df = df.columns[1:-1] 
 c = []
 
@@ -72,6 +72,11 @@ app.layout = html.Div([
     [dash.dependencies.Input('xaxis-column', 'value')])
 def update_graph(xaxis_column_name):
 
+    if "Offers" in xaxis_column_name:
+        word = "Providers"
+    else:
+        word = "Patients"
+
     if(xaxis_column_name == 'Density of HHA Providers'):
 
         return {
@@ -122,9 +127,10 @@ def update_graph(xaxis_column_name):
             colorbar = dict(
                 title = "%")
             ) ],
+
                 'layout': dict(
-            title = "% Patients who "+xaxis_column_name,
-            geo = dict(
+                title = f"% {word} who {xaxis_column_name}",
+                geo = dict(
                 scope='usa',
                 projection=dict( type='albers usa' ),
                 showlakes = True,
