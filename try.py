@@ -22,6 +22,10 @@ colors = ["rgb(0,116,217)","rgb(255,65,54)","rgb(133,20,75)"]
 cities = []
 scale = 10
 
+df__ = pd.read_parquet('hhc_providers_general.parquet')
+
+c.append({'label': 'General View of Percent of Providers', 'value': 'General View of Percent of Providers'})
+
 for i in range(len(limits)):
     lim = limits[i]
     df_sub = df_[df_['Provider Name'].between(lim[0], lim[1])]
@@ -99,9 +103,19 @@ def update_graph(xaxis_column_name):
                 )
             }
 
+    if(xaxis_column_name == 'General View of Percent of Providers'):
+
+        return     { 
+
+                'data' : [go.Pie(labels=df__['Name'],values=df__['Percent of HHC providers'])],
+
+
+                'layout' : dict( title = 'Percent of Home Health Providers' ) }
+
+
     else:
 
-       return {
+        return {
                 'data': [ dict(
             type='choropleth',
         
